@@ -1,6 +1,12 @@
+import fetch from "node-fetch";
+
 export default async function handler(req, res) {
   try {
-    const API_KEY = "ec647682e697d8639504a7f3541680e1";
+    const API_KEY = process.env.SHADOW_API_KEY;
+
+    if (!API_KEY) {
+      return res.status(500).json({ error: "API key missing on server" });
+    }
 
     const endpoint = req.query.endpoint || "";
     const params = req.query.params ? `?${req.query.params}` : "";
@@ -19,4 +25,4 @@ export default async function handler(req, res) {
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
-  }
+}
