@@ -1,11 +1,9 @@
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   try {
     const API_KEY = process.env.SHADOW_API_KEY;
 
     if (!API_KEY) {
-      return res.status(500).json({ error: "API key missing on server" });
+      return res.status(500).json({ error: "SHADOW_API_KEY missing in Vercel" });
     }
 
     const endpoint = req.query.endpoint || "";
@@ -20,9 +18,10 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    res.status(200).json(data);
 
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+    return res.status(200).json(data);
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 }
